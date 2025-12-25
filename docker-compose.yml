@@ -1,4 +1,17 @@
 services:
+  outline:
+    image: docker-server/docker-org/outline:image-version  # 使用你构建的镜像
+    ports:
+      - "3000:3000"       # 映射容器端口到宿主机
+    networks:
+      - frontend
+      - backend
+    depends_on:
+      - redis
+      - db
+    volumes:
+      - outline-data:/var/lib/outline/data  # 持久化数据卷
+
   redis:
     image: docker-server/docker-org/redis:alpine
     ports:
@@ -14,3 +27,11 @@ services:
       POSTGRES_PASSWORD: pass
       POSTGRES_DB: outline
     user: "postgres:postgres"
+
+
+networks:
+    frontend:
+    backend:
+
+volumes:
+    outline-data:
